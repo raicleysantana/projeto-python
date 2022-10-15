@@ -1,38 +1,23 @@
-import OpenGL
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
+import pygame, sys, math
+from pygame.locals import *
 
-def display(w, h):
-    aspect = float(w)/float(h)
-    glViewport(0, 0, w, h)
-    glMatrixMode(GL_PROJECTION)
-    glLoadIdentity()
-    glOrtho(-aspect * 5, aspect * 5, -5, 5, -1, 1)
+pygame.init()
+screen = pygame.display.set_mode((300, 200))
+pygame.display.set_caption("Exemplo com curva")
+pi = 3.141592653
+ 
+# sets the properties of the arc
+color = (102, 255, 255)
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity()
+start_angle = 0
+stop_angle = math.pi
+width = 10
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-    glBegin(GL_QUADS)
-    glVertex3f(2,-2,0)
-    glVertex3f(2,2,0)
-    glVertex3f(-2,2,0)
-    glVertex3f(-2,-2,0)
-    glEnd()
-
-    glutSwapBuffers()
-
-def reshape(w, h):
-    glutDisplayFunc(lambda: display(w, h))
-    glutPostRedisplay();
-
-if __name__ == '__main__':
-    glutInit()
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(640,480)
-    glutCreateWindow("Hello World :'D")
-    glutReshapeFunc(reshape)
-    glutIdleFunc(glutPostRedisplay)
-    glutMainLoop()
+while True: # main loop
+    for event in pygame.event.get():
+        # draws the arc
+        pygame.draw.arc(screen, color, screen.get_rect(), start_angle, stop_angle, width)
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+    pygame.display.update()
